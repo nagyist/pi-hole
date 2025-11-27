@@ -375,22 +375,6 @@ check_firewalld() {
                     log_write "${CROSS} ${COL_RED}  Allow Service: ${i}${COL_NC} (${FAQ_HARDWARE_REQUIREMENTS_FIREWALLD})"
                 fi
             done
-            # check for custom FTL FirewallD zone
-            local firewalld_zones
-            firewalld_zones=$(firewall-cmd --get-zones)
-            if [[ "${firewalld_zones}" =~ "ftl" ]]; then
-                log_write "${TICK} ${COL_GREEN}FTL Custom Zone Detected${COL_NC}";
-                # check FTL custom zone interface: lo
-                local firewalld_ftl_zone_interfaces
-                firewalld_ftl_zone_interfaces=$(firewall-cmd --zone=ftl --list-interfaces)
-                if [[ "${firewalld_ftl_zone_interfaces}" =~ "lo" ]]; then
-                    log_write "${TICK} ${COL_GREEN}  Local Interface Detected${COL_NC}";
-                else
-                    log_write "${CROSS} ${COL_RED}  Local Interface Not Detected${COL_NC} (${FAQ_HARDWARE_REQUIREMENTS_FIREWALLD})"
-                fi
-            else
-                log_write "${CROSS} ${COL_RED}FTL Custom Zone Not Detected${COL_NC} (${FAQ_HARDWARE_REQUIREMENTS_FIREWALLD})"
-            fi
         fi
     else
         log_write "${TICK} ${COL_GREEN}Firewalld service not detected${COL_NC}";
