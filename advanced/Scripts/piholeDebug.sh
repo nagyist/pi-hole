@@ -1022,6 +1022,24 @@ show_db_entries() {
     )
 
     for line in "${entries[@]}"; do
+        # Use gray color for "no". Normal color for "yes"
+        line=${line//--no---/${COL_GRAY}  no   ${COL_NC}}
+        line=${line//--yes--/  yes  }
+
+        # Use red for "deny" and green for "allow"
+        if [ "$title" = "Domainlist" ]; then
+            line=${line//regex-deny/${COL_RED}regex-deny${COL_NC}}
+            line=${line//regex-allow/${COL_GREEN}regex-allow${COL_NC}}
+            line=${line//exact-deny/${COL_RED}exact-deny${COL_NC}}
+            line=${line//exact-allow/${COL_GREEN}exact-allow${COL_NC}}
+        fi
+
+        # Use red for "block" and green for "allow"
+        if [ "$title" = "Adlists" ]; then
+            line=${line//-BLOCK-/${COL_RED} Block ${COL_NC}}
+            line=${line//-ALLOW-/${COL_GREEN} Allow ${COL_NC}}
+        fi
+
         log_write "   ${line}"
     done
 
