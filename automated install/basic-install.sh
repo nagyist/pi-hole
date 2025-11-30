@@ -155,7 +155,7 @@ EOM
 )
 
 # List of required packages on APK based systems
-PIHOLE_META_VERSION_APK=0.1
+PIHOLE_META_VERSION_APK=0.2
 PIHOLE_META_DEPS_APK=(
     bash
     bash-completion
@@ -181,7 +181,6 @@ PIHOLE_META_DEPS_APK=(
     sudo
     tzdata
     unzip
-    wget
 )
 
 ######## Undocumented Flags. Shhh ########
