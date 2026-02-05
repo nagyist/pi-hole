@@ -1251,10 +1251,6 @@ install_manpage() {
         # if not present, create man8 directory
         install -d -m 755 /usr/local/share/man/man8
     fi
-    if [[ ! -d "/usr/local/share/man/man5" ]]; then
-        # if not present, create man5 directory
-        install -d -m 755 /usr/local/share/man/man5
-    fi
     # Testing complete, copy the files & update the man db
     install -D -m 644 -T ${PI_HOLE_LOCAL_REPO}/manpages/pihole.8 /usr/local/share/man/man8/pihole.8
 
