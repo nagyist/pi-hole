@@ -50,8 +50,12 @@ rm -f "/etc/pihole/GitHubVersions"
 rm -f "/etc/pihole/localbranches"
 rm -f "/etc/pihole/localversions"
 
-# Create new versions file if it does not exist
 VERSION_FILE="/etc/pihole/versions"
+
+# Remove the version file if it exists
+rm -f "${VERSION_FILE}"
+
+# Create new versions file
 touch "${VERSION_FILE}"
 chmod 644 "${VERSION_FILE}"
 
