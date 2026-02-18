@@ -52,11 +52,8 @@ rm -f "/etc/pihole/localversions"
 
 VERSION_FILE="/etc/pihole/versions"
 
-# Remove the version file if it exists
-rm -f "${VERSION_FILE}"
-
-# Create new versions file
-touch "${VERSION_FILE}"
+# Truncates the file to zero length if it exists to clear it up, otherwise creates an empty file.
+truncate -s 0 "${VERSION_FILE}"
 chmod 644 "${VERSION_FILE}"
 
 # if /pihole.docker.tag file exists, we will use it's value later in this script
