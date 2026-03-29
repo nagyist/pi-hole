@@ -112,11 +112,15 @@ fi
 r=20
 c=70
 
+# Version of Pi-hole's meta package on APT based systems
+# Must be incremented whenever dependencies in PIHOLE_META_PACKAGE_CONTROL_APT change
+PIHOLE_META_VERSION_APT=0.6
+
 # Content of Pi-hole's meta package control file on APT based systems
 PIHOLE_META_PACKAGE_CONTROL_APT=$(
     cat <<EOM
 Package: pihole-meta
-Version: 0.6
+Version: ${PIHOLE_META_VERSION_APT}
 Maintainer: Pi-hole team <adblock@pi-hole.net>
 Architecture: all
 Description: Pi-hole dependency meta package
@@ -125,9 +129,6 @@ Section: contrib/metapackages
 Priority: optional
 EOM
 )
-
-# Version of Pi-hole's meta package on APT based systems (must match Version: field in PIHOLE_META_PACKAGE_CONTROL_APT)
-PIHOLE_META_VERSION_APT=0.6
 
 # Content of Pi-hole's meta package control file on RPM based systems
 PIHOLE_META_PACKAGE_CONTROL_RPM=$(
