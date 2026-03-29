@@ -126,6 +126,9 @@ Priority: optional
 EOM
 )
 
+# Version of Pi-hole's meta package on APT based systems (must match Version: field in PIHOLE_META_PACKAGE_CONTROL_APT)
+PIHOLE_META_VERSION_APT=0.6
+
 # Content of Pi-hole's meta package control file on RPM based systems
 PIHOLE_META_PACKAGE_CONTROL_RPM=$(
     cat <<EOM
@@ -1373,8 +1376,8 @@ EOF
 }
 
 update_package_cache() {
-    # Update package cache on apt based OSes. Do this every time since
-    # it's quick and packages can be updated at any time.
+    # Update package cache on apt based OSes. Only called when pihole-meta is
+    # absent or outdated, so new dependencies can be resolved by apt.
 
     # Local, named variables
     local str="Update local cache of available packages"
@@ -2305,9 +2308,18 @@ main() {
     # Check for supported package managers so that we may install dependencies
     package_manager_detect
 
-    # Update package cache only on apt based systems
+    # Only update the apt package cache when pihole-meta is absent or outdated.
+    # On a fresh install the package won't exist yet so the cache update always
+    # runs. On upgrades it only runs when the meta version has bumped, meaning
+    # new dependencies may have been added. This saves time and I/O on
+    # resource-constrained hardware (e.g. SD cards).
     if is_command apt-get; then
+        local installed_meta_version
+        installed_meta_version=$(dpkg-query -W -f='${Version}' pihole-meta 2>/dev/null)
+        if [[ -z "${installed_meta_version}" ]] || \
+           dpkg --compare-versions "${installed_meta_version}" lt "${PIHOLE_META_VERSION_APT}"; then
             update_package_cache || exit 1
+        fi
     fi
 
     # Notify user of package availability
