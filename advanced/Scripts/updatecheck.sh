@@ -8,6 +8,8 @@
 # This file is copyright under the latest version of the EUPL.
 # Please see LICENSE file for your rights under this license.
 
+set -o pipefail
+
 function get_local_branch() {
     # Return active branch
     cd "${1}" 2>/dev/null || { echo "null"; return; }
