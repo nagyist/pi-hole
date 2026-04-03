@@ -2317,8 +2317,7 @@ main() {
     if is_command apt-get; then
         local installed_meta_version
         installed_meta_version=$(dpkg-query -W -f='${Version}' pihole-meta 2>/dev/null) || true
-        if [[ -z "${installed_meta_version}" ]] || \
-           dpkg --compare-versions "${installed_meta_version}" lt "${PIHOLE_META_VERSION_APT}"; then
+        if dpkg --compare-versions "${installed_meta_version}" lt "${PIHOLE_META_VERSION_APT}"; then
             update_package_cache || exit 1
         fi
     fi
