@@ -71,8 +71,10 @@ fix_owner_permissions() {
   chown pihole:pihole "${1}"
   chmod 664 "${1}"
 
-  # Ensure the containing directory is group writable
-  chmod g+w "$(dirname -- "${1}")"
+  # Ensure the containing directory is owned by pihole:pihole
+  # so the pihole user can write to it without requiring group-write
+  # permissions (which would change the directory mode unexpectedly)
+  chown pihole:pihole "$(dirname -- "${1}")"
 }
 
 # Generate new SQLite3 file from schema template
