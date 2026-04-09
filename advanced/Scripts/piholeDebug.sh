@@ -288,7 +288,7 @@ check_ftl_version() {
 
 # Checks the core version of the Pi-hole codebase
 check_component_versions() {
-    # Check the Web version, branch, and commit
+    # Check the Core version, branch, and commit
     compare_local_version_to_git_version "${CORE_GIT_DIRECTORY}" "Core"
     # Check the Web version, branch, and commit
     compare_local_version_to_git_version "${WEB_GIT_DIRECTORY}" "Web"
