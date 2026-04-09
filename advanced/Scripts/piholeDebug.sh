@@ -94,7 +94,6 @@ PIHOLE_GRAVITY_DB_FILE="$(get_ftl_conf_value "files.gravity")"
 PIHOLE_FTL_DB_FILE="$(get_ftl_conf_value "files.database")"
 
 PIHOLE_COMMAND="${BIN_DIRECTORY}/pihole"
-PIHOLE_COLTABLE_FILE="${BIN_DIRECTORY}/COL_TABLE"
 
 FTL_PID="$(get_ftl_conf_value "files.pid")"
 
@@ -119,7 +118,6 @@ REQUIRED_FILES=("${PIHOLE_CRON_FILE}"
 "${PIHOLE_FTL_CONF_FILE}"
 "${PIHOLE_DNSMASQ_CONF_FILE}"
 "${PIHOLE_COMMAND}"
-"${PIHOLE_COLTABLE_FILE}"
 "${FTL_PID}"
 "${PIHOLE_LOG}"
 "${PIHOLE_LOG_GZIPS}"
