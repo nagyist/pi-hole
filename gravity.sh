@@ -614,7 +614,7 @@ compareLists() {
 # Download specified URL and perform checks on HTTP status and file content
 gravity_DownloadBlocklistFromUrl() {
   local url="${1}" adlistID="${2}" saveLocation="${3}" compression="${4}" gravity_type="${5}" domain="${6}"
-  local listCurlBuffer str curlOutput httpCode curlErrorMsg="" curlExitCode="" curlOutputFormat=""
+  local listCurlBuffer str curlVersion curlOutput httpCode curlErrorMsg="" curlExitCode="" curlOutputFormat=""
   local success="" ip customUpstreamResolver="" file_path permissions ip_addr port blocked=false download=true
   # modifiedOptions is an array to store all the options used to check if the adlist has been changed upstream
   local modifiedOptions=()
@@ -758,10 +758,14 @@ gravity_DownloadBlocklistFromUrl() {
   fi
 
   if [[ "${download}" == true ]]; then
+    # Define the generic error message
+    curlOutputFormat='%{http_code}\nNo message available. Non supported curl version.'
+
     # Check if the installed curl version supports the "-w %{errormsg}" option
     # (available as of curl 7.75.0)
-    curlOutputFormat='%{http_code}\nnomsg'
-    if curl --help --write-out | grep -q "errormsg" ; then
+    curlVersion=$(curl --version | awk '{print $2;exit}')
+    if [[ "$(printf '%s\n' "${curlVersion}" 7.75 | sort -V | head -n1)" == 7.75 ]]; then
+        # Use the error message returned by curl
         curlOutputFormat='%{http_code}\n%{errormsg}'
     fi
 
@@ -781,11 +785,6 @@ gravity_DownloadBlocklistFromUrl() {
     read -r curlErrorMsg;
   } < <( echo "${curlOutput}" )
 
-  # If curl is too old to return errormsg, we provide a generic message here
-  if [[ "${curlErrorMsg}" == "nomsg" ]]; then
-    curlErrorMsg="No message available. Non supported curl version."
-  fi
-
   case $url in
   # Did we "download" a local file?
   "file"*)
@@ -804,6 +803,7 @@ gravity_DownloadBlocklistFromUrl() {
       case "${httpCode}" in
         "200") echo -e "${OVER}  ${TICK} ${str} Retrieval successful" ;;
         "304") echo -e "${OVER}  ${TICK} ${str} No changes detected"  ;;
+        *) echo -e "${OVER}  ${TICK} ${str} Success (http_code=${COL_RED}${httpCode}${COL_NC})"  ;;
       esac
       success=true
     else
