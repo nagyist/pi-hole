@@ -814,7 +814,7 @@ gravity_DownloadBlocklistFromUrl() {
       case "${httpCode}" in
         "200") echo -e "${OVER}  ${TICK} ${str} Retrieval successful" ;;
         "304") echo -e "${OVER}  ${TICK} ${str} No changes detected"  ;;
-        *) echo -e "${OVER}  ${TICK} ${str} Success (http_code=${COL_RED}${httpCode}${COL_NC})"  ;;
+        *) echo -e "${OVER}  ${TICK} ${str} Success (http_code=${COL_CYAN}${httpCode}${COL_NC})"  ;;
       esac
       success=true
     else
@@ -827,7 +827,7 @@ gravity_DownloadBlocklistFromUrl() {
         "504") echo -e "${OVER}  ${CROSS} ${str} Connection Timed Out (Gateway)" ;;
         "521") echo -e "${OVER}  ${CROSS} ${str} Web Server Is Down (Cloudflare)" ;;
         "522") echo -e "${OVER}  ${CROSS} ${str} Connection Timed Out (Cloudflare)" ;;
-        *) echo -e "${OVER}  ${CROSS} ${str} Retrieval failed (exit_code=${COL_RED}${curlExitCode}${COL_NC} Msg: ${COL_CYAN}${curlErrorMsg}${COL_NC})" ;;
+        *) echo -e "${OVER}  ${CROSS} ${str} Retrieval failed (exit_code=${COL_CYAN}${curlExitCode}${COL_NC} Msg: ${COL_CYAN}${curlErrorMsg}${COL_NC})" ;;
       esac
     fi
     ;;
