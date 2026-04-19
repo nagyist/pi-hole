@@ -774,7 +774,7 @@ gravity_DownloadBlocklistFromUrl() {
     # By default curl returns exitcode=0 even an HTTP code happens (403, 404, 500, etc). To fix
     # this, we use the "--fail" option to force curl to return a non-zero exit code.
     # If curl version is older than 7.75.0, curl can't generate the errormsg output. In this case,
-    # the command will return "nomsg" and this will be replaced later by a generic error message.
+    # a generic message is returned.
     curlOutput=$(curl --connect-timeout ${curl_connect_timeout} -s --fail -L ${compression:+${compression}} ${customUpstreamResolver:+${customUpstreamResolver}} "${modifiedOptions[@]}" -w "${curlOutputFormat}" "${url}" -o "${listCurlBuffer}")
     curlExitCode="$?"
   fi
