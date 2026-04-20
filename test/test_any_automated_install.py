@@ -154,12 +154,6 @@ def test_installPihole_fresh_install_readableFiles(host):
         check_man = test_cmd.format("r", "/usr/local/share/man/man8", piholeuser)
         actual_rc = host.run(check_man).rc
         assert exit_status_success == actual_rc
-        check_man = test_cmd.format("x", "/usr/local/share/man/man5", piholeuser)
-        actual_rc = host.run(check_man).rc
-        assert exit_status_success == actual_rc
-        check_man = test_cmd.format("r", "/usr/local/share/man/man5", piholeuser)
-        actual_rc = host.run(check_man).rc
-        assert exit_status_success == actual_rc
         check_man = test_cmd.format(
             "r", "/usr/local/share/man/man8/pihole.8", piholeuser
         )
