@@ -772,9 +772,13 @@ gravity_DownloadBlocklistFromUrl() {
     # Define the generic error message
     curlOutputFormat='%{http_code}\nNo message available. Non supported curl version.'
 
-    # Check if the installed curl version supports the "-w %{errormsg}" option
-    # (available as of curl 7.75.0)
+    # Check if the installed curl version supports the "-w %{errormsg}" option (available as of curl 7.75.0)
+    # (https://github.com/pi-hole/pi-hole/pull/6605#discussion_r3112153347)
+    # First we get the current curl version.
     curlVersion=$(curl --version | awk '{print $2;exit}')
+    # After that, we add "7.75", creating a list with 2 items.
+    # Then we sort the list (ascending order) and return the first item.
+    # If "7.75" is returned, it means that the current version is greater than or equal to "7.75.0".
     if [[ "$(printf '%s\n' "${curlVersion}" 7.75 | sort -V | head -n1)" == 7.75 ]]; then
         # Use the error message returned by curl
         curlOutputFormat='%{http_code}\n%{errormsg}'
