@@ -114,7 +114,7 @@ c=70
 
 # Version of Pi-hole's meta package on APT based systems
 # Must be incremented whenever dependencies in PIHOLE_META_PACKAGE_CONTROL_APT change
-PIHOLE_META_VERSION_APT=0.6
+PIHOLE_META_VERSION_APT=0.7
 
 # Content of Pi-hole's meta package control file on APT based systems
 PIHOLE_META_PACKAGE_CONTROL_APT=$(
@@ -124,7 +124,7 @@ Version: ${PIHOLE_META_VERSION_APT}
 Maintainer: Pi-hole team <adblock@pi-hole.net>
 Architecture: all
 Description: Pi-hole dependency meta package
-Depends: awk,bash-completion,binutils,ca-certificates,cron|cron-daemon,curl,dialog,bind9-dnsutils|dnsutils,dns-root-data,git,grep,iproute2,iputils-ping,jq,libcap2,libcap2-bin,lshw,procps,psmisc,sudo,unzip
+Depends: awk,bash-completion,binutils,ca-certificates,cron|cron-daemon,curl,dialog,bind9-dnsutils|dnsutils,dns-root-data,git,grep,iproute2,iputils-ping,jq,libcap2,libcap2-bin,logrotate,lshw,procps,psmisc,sudo,unzip
 Section: contrib/metapackages
 Priority: optional
 EOM
@@ -134,12 +134,12 @@ EOM
 PIHOLE_META_PACKAGE_CONTROL_RPM=$(
     cat <<EOM
 Name: pihole-meta
-Version: 0.3
+Version: 0.4
 Release: 1
 License: EUPL
 BuildArch: noarch
 Summary: Pi-hole dependency meta package
-Requires: bash-completion,bind-utils,binutils,ca-certificates,chkconfig,cronie,curl,dialog,findutils,gawk,git,grep,iproute,jq,libcap,lshw,procps-ng,psmisc,sudo,unzip
+Requires: bash-completion,bind-utils,binutils,ca-certificates,chkconfig,cronie,curl,dialog,findutils,gawk,git,grep,iproute,jq,libcap,logrotate,lshw,procps-ng,psmisc,sudo,unzip
 %description
 Pi-hole dependency meta package
 %prep
@@ -147,6 +147,9 @@ Pi-hole dependency meta package
 %files
 %install
 %changelog
+* Thu Dec 18 2025 Pi-hole Team - 0.4
+- Add logrotate to the list of dependencies
+
 * Mon Jul 14 2025 Pi-hole Team - 0.3
 - Remove nmap-ncat from the list of dependencies
 
