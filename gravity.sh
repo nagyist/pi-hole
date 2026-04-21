@@ -776,10 +776,14 @@ gravity_DownloadBlocklistFromUrl() {
     # (https://github.com/pi-hole/pi-hole/pull/6605#discussion_r3112153347)
     # First we get the current curl version.
     curlVersion=$(curl --version | awk '{print $2;exit}')
-    # After that, we add "7.75", creating a list with 2 items.
-    # Then we sort the list (ascending order) and return the first item.
-    # If "7.75" is returned, it means that the current version is greater than or equal to "7.75.0".
-    if [[ "$(printf '%s\n' "${curlVersion}" 7.75 | sort -V | head -n1)" == 7.75 ]]; then
+    # After that, we pipe the current version along with the string '7.75' (the minimum version supporting the required option.)
+    # Then we sort the list in natural (version) order and return the first item which will be the lowest version seen.
+    # If it is "7.75" then the current version is greater than or equal to "7.75.0".
+    # Compatibility notes:
+    #   Busybox doesn't support some long flags:
+    #   - "sort -V" is short form of "sort --version-sort"
+    #   - "head -n1" is short form of "head --lines=1"
+    if [[ "$(printf '%s\n' "${curlVersion}" "7.75" | sort -V | head -n1)" == 7.75 ]]; then
         # Use the error message returned by curl
         curlOutputFormat='%{http_code}\n%{errormsg}'
     fi
