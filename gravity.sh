@@ -770,7 +770,7 @@ gravity_DownloadBlocklistFromUrl() {
 
   if [[ "${download}" == true ]]; then
     # Define the generic error message
-    curlOutputFormat='%{http_code}\nNo message available. Non supported curl version.'
+    curlOutputFormat='%{http_code};No message available. Non supported curl version.'
 
     # Check if the installed curl version supports the "-w %{errormsg}" option (available as of curl 7.75.0)
     # (https://github.com/pi-hole/pi-hole/pull/6605#discussion_r3112153347)
@@ -785,7 +785,7 @@ gravity_DownloadBlocklistFromUrl() {
     #   - "head -n1" is short form of "head --lines=1"
     if [[ "$(printf '%s\n' "${curlVersion}" "7.75" | sort -V | head -n1)" == 7.75 ]]; then
         # Use the error message returned by curl
-        curlOutputFormat='%{http_code}\n%{errormsg}'
+        curlOutputFormat='%{http_code};%{errormsg}'
     fi
 
     # This command will output the HTTP code and an error message, if available.
@@ -799,10 +799,7 @@ gravity_DownloadBlocklistFromUrl() {
   fi
 
   # Retrieve http_code and errormsg values, returned by curl command
-  {
-    read -r httpCode;
-    read -r curlErrorMsg;
-  } < <( echo "${curlOutput}" )
+  IFS=";" read -r httpCode curlErrorMsg <<<"$curlOutput"
 
   case $url in
   # Did we "download" a local file?
